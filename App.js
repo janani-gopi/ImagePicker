@@ -23,7 +23,6 @@ export default function App() {
   const [visible, setIsVisible] = useState(false);
   const [index, setIndex] = useState(0);
   const [showDelete, setShowDelete] = useState(false);
-  //animation
 
   //to open camera and upload image
   function usingCamera() {
@@ -93,7 +92,7 @@ export default function App() {
   function selectSingleImage(index) {
     const images = image.filter((each, index1) => {
       if (index1 == index) {
-        each.isSelected = true;
+        each.isSelected ? each.isSelected = false : each.isSelected = true
         return each;
       } else {
         return each;
@@ -145,11 +144,11 @@ export default function App() {
                 onLongPress={() => {
                   selectSingleImage(index);
                   setIndex(index);
-                  setShowDelete(true);
+                  setShowDelete(prev => !prev);
                 }}
                 onPress={() => {
                   setIndex(index);
-                  setIsVisible(true);
+                  setIsVisible(visible);
                 }}
                 key={index}>
                 <Image
