@@ -12,7 +12,6 @@ import {
   ScrollView,
   Alert,
   TouchableOpacity,
-  ImageBackground,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 
@@ -84,15 +83,20 @@ export default function App() {
         onPress: () => null,
         style: 'cancel',
       },
-      {text: 'OK', onPress: () => setImage([])},
+      {
+        text: 'OK',
+        onPress: () => {
+          setchecked(false);
+          setImage([]);
+        },
+      },
     ]);
-    console.log('all images cleared');
   }
   //function to select a image
   function selectSingleImage(index) {
     const images = image.filter((each, index1) => {
       if (index1 == index) {
-        each.isSelected ? each.isSelected = false : each.isSelected = true
+        each.isSelected ? (each.isSelected = false) : (each.isSelected = true);
         return each;
       } else {
         return each;
@@ -114,79 +118,111 @@ export default function App() {
         imageIndex={index}
         visible={visible}
         onRequestClose={() => setIsVisible(false)}
-      />
-      <View style={styles.btncontainer}>
-        <Pressable style={styles.btn1} onPress={fromGallery}>
-          <FontAwesome name="photo" color="white" size={25} />
-        </Pressable>
-
-        <Pressable style={styles.btn2} onPress={usingCamera}>
-          <FontAwesome name="camera" color="white" size={25} />
-        </Pressable>
-      </View>
-      <CheckBox
-        style={{padding: 30}}
-        onClick={() => {
-          setchecked(prev => !prev);
+        onLongPress={() => {
+          deleteSingleImage(index);
         }}
-        checkBoxColor="#cdb4db"
-        isChecked={checked}
-        rightText="Select all to delete"
-        rightTextStyle={{color: '#cdb4db'}}
       />
-      <Text style={styles.header}>GALLERY</Text>
+
+      <Text style={styles.header}>Uploaded images</Text>
+      {image.length > 0 && (
+        <CheckBox
+          style={{padding: 10}}
+          onClick={() => {
+            setchecked(prev => !prev);
+            const images = image.map(each => {
+              each.isSelected
+                ? (each.isSelected = false)
+                : (each.isSelected = true);
+              return each;
+            });
+            setImage(images);
+          }}
+          checkBoxColor="#474973"
+          isChecked={checked}
+          rightText="Select all to delete"
+          rightTextStyle={{color: '#474973'}}
+        />
+      )}
 
       <ScrollView>
         <View style={styles.imgcontainer}>
-          {image?.map((each, index) => {
-            return (
-              <TouchableOpacity
-                onLongPress={() => {
-                  selectSingleImage(index);
-                  setIndex(index);
-                  setShowDelete(prev => !prev);
-                }}
-                onPress={() => {
-                  setIndex(index);
-                  setIsVisible(visible);
-                }}
-                key={index}>
-                <Image
-                  source={{uri: each.image.path}}
-                  style={styles.image}
-                  key={index}
-                />
-                <FontAwesome
-                  name="check"
-                  color="white"
-                  size={55}
-                  style={{
-                    display: each.isSelected ? 'flex' : 'none',
-                    position: 'absolute',
-                    top: 30,
-                    left: 35,
+          {image.length > 0 ? (
+            image.map((each, index) => {
+              return (
+                <TouchableOpacity
+                  onLongPress={() => {
+                    selectSingleImage(index);
+                    setShowDelete(prev => !prev);
+                    setIndex(index);
                   }}
-                />
-              </TouchableOpacity>
-            );
-          })}
+                  onPress={() => {
+                    setIndex(index);
+                    setIsVisible(true);
+                  }}
+                  key={index}>
+                  <Image
+                    source={{uri: each.image.path}}
+                    style={{
+                      height: 120,
+                      width: 120,
+                      borderRadius: 15,
+                      borderWidth: each.isSelected ? 2 : null,
+                      borderColor: each.isSelected ? '#474973' : null,
+                    }}
+                    key={index}
+                  />
+                  <FontAwesome
+                    name="check-circle"
+                    color="#474973"
+                    size={25}
+                    style={{
+                      display: each.isSelected ? 'flex' : 'none',
+                      position: 'absolute',
+                      top: 0,
+                      left: 95,
+                    }}
+                  />
+                </TouchableOpacity>
+              );
+            })
+          ) : (
+            <Text
+              style={{
+                color: '#474973',
+                fontSize: 30,
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                paddingTop: 250,
+                padding: 20,
+                textAlign: 'center',
+              }}>
+              Upload a photo to display here!
+            </Text>
+          )}
         </View>
       </ScrollView>
+      <View style={styles.btncontainer}>
+        <Pressable style={styles.btn} onPress={fromGallery}>
+          <FontAwesome name="photo" color="#474973" size={35} />
+          <Text style={{color: 'gray',marginLeft:-5}}>Gallery</Text>
+        </Pressable>
+        <Pressable style={styles.btn} onPress={usingCamera}>
+          <FontAwesome name="camera" color="#474973" size={35} />
+          <Text style={{color: 'gray', textAlign: 'center', marginLeft:-8}}>Camera</Text>
+        </Pressable>
+      </View>
       {showDelete && (
-        <View style={styles.binicon}>
-          <MaterialIcons
-            name="delete"
-            size={45}
-            color="#cdb4db"
-            onPress={() => {
-              deleteSingleImage(index);
-            }}
-          />
-        </View>
+        <Pressable
+          onPress={() => {
+            deleteSingleImage(index);
+          }}
+          style={styles.deleteallbtn}>
+          <Text style={{textAlign: 'center'}}>Delete</Text>
+        </Pressable>
       )}
 
       {checked && (
-        <Pressable onPress={deleteAll} style={styles.btn}>
+        <Pressable onPress={deleteAll} style={styles.deleteallbtn}>
           <Text style={{textAlign: 'center'}}>Delete all</Text>
         </Pressable>
       )}

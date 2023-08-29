@@ -20,35 +20,18 @@ export const styles = StyleSheet.create({
     paddingTop:20
   },
   btn: {
-    padding: 20,
-    backgroundColor: '#cdb4db',
-    borderRadius: 25,
-    width: 150,
-    marginBottom: 20,
-    marginRight: 'auto',
-    marginLeft: 'auto',
-  },
-  btn1: {
-    padding: 20,
-    backgroundColor: '#cdb4db',
-    borderTopRightRadius: 25,
-    borderBottomEndRadius: 25,
-  },
-  btn2: {
-    padding: 20,
-    backgroundColor: '#cdb4db',
-    borderTopLeftRadius: 25,
-    borderBottomStartRadius: 25,
+    padding:20
   },
   btntxt: {
     color: 'white',
     fontSize: 15,
   },
   header: {
-    color: '#cdb4db',
+    backgroundColor: '#474973',
     textAlign: 'center',
     fontSize: 25,
     paddingBottom: 25,
+    paddingTop:30
   },
   image: {
     height: 120,
@@ -57,7 +40,7 @@ export const styles = StyleSheet.create({
   },
   displaytxt: {
     fontSize: 15,
-    color: '#cdb4db',
+    color: '#474973',
     textAlign: 'center',
     height: 200,
   },
@@ -65,7 +48,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   icon: {
-    color: '#cdb4db',
+    color: '#474973',
     fontSize: 25,
     position: 'absolute',
     top: -5,
@@ -76,7 +59,11 @@ export const styles = StyleSheet.create({
     justifyContent:"center",
     alignContent:"center",
     paddingHorizontal: 170,
-    padding:50
+    padding:10
   },
+  deleteallbtn:{
+    padding:20,
+    backgroundColor:"#474973"
+  }
   
 });
